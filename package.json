@@ -1,0 +1,25 @@
+{
+  "name": "luogu-cli",
+  "version": "1.0.0",
+  "description": "cli tool for luogu online judge",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/swift-zym/luogu-cli.git"
+  },
+  "keywords": [
+    "luogu",
+    "onlinejudge",
+    "oj",
+    "cli"
+  ],
+  "author": "swift-zym",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/swift-zym/luogu-cli/issues"
+  },
+  "homepage": "https://github.com/swift-zym/luogu-cli#readme"
+}
