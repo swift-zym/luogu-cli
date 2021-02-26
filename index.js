@@ -1,11 +1,15 @@
 #!/usr/bin/env node
-const config = require('./config.json');
-const luogu = require('commander');
 const cheerio = require('cheerio');
 const color = require('colors-cli');
 const inquirer = require('inquirer');
 let request=require('request-promise');
 const fs = require('fs');
+
+
+global.config = require('./config.json');
+
+const luogu = require('commander');
+const { reject } = require('bluebird');
 
 global.data = {
     get user(){
@@ -20,16 +24,20 @@ global.data = {
 }
 
 global.getCSRFToken=async function(){
-    let html=await request({
-        url:config['luogu-domain'],
-        timeout:1500
-    });
-    let $ = cheerio.load(html);
-    let chapters = $('meta');
-    chapters.each(function(item){
-        if($(this).attr('name') == 'csrf-token'){
-            return $(this).attr('content');
-        }
+    return new Promise(async (resolve,reject)=>{
+        let html=await request({
+            url:config['luogu-domain'],
+            timeout:1500,
+            jar:await makeJar()
+        });
+        let $ = cheerio.load(html);
+        let chapters = $('meta');
+        chapters.each(function(item){
+            if($(this).attr('name') == 'csrf-token'){
+                resolve($(this).attr('content'));
+            }
+        });
+        reject('csrf-token not found');
     });
 }
 
@@ -39,7 +47,7 @@ global.isFileExist=function(filename) {
 
 
 
-function makeJar(){
+global.makeJar=function(){
     let tough = require('tough-cookie');
     let uidCookie = new tough.Cookie({
         key:"_uid",
@@ -84,5 +92,7 @@ global.checkTokenStatus=async function(){
 luogu.version(require('./package.json').version);
 
 require('./auth')(luogu);
+require('./problem')(luogu);
+require('./benben')(luogu);
 
 luogu.parse(process.argv); 

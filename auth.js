@@ -4,7 +4,7 @@ const inquirer = require('inquirer');
 module.exports = function (luogu) {
     luogu
         .command('auth <command>')
-        .description('用户身份验证')
+        .description('用户身份验证 (login|logout|status)')
         .alias('a')
         .action(async function (command) {
             if (command == "login") {
@@ -20,7 +20,7 @@ module.exports = function (luogu) {
                 await inquirer.prompt(promptList).then(answers => {
                     data.user = answers;
                 });
-                let isOK=await checkTokenStatus();
+                let isOK = await checkTokenStatus();
                 if (!isOK) {
                     console.log(color.red('Error:'), 'login fail,check your uid and clientid.');
                     data.user = {};
@@ -40,7 +40,7 @@ module.exports = function (luogu) {
                 else {
                     console.log(color.blue("uid:"), data.user.uid);
                     console.log(color.blue("token:"), data.user.clientid);
-                    let isOK=await checkTokenStatus();
+                    let isOK = await checkTokenStatus();
                     if (isOK) {
                         console.log(color.green("token is valid."));
                     }
@@ -50,7 +50,7 @@ module.exports = function (luogu) {
                 }
             }
             else {
-                console.log("command not found,try --help");
+                console.log("command not found,try --help.");
             }
         });
 }
