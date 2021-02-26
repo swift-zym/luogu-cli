@@ -32,6 +32,7 @@
     "inquirer": "^8.0.0",
     "request": "^2.88.2",
     "request-promise": "git+https://github.com/request/request-promise.git",
-    "tough-cookie": "^4.0.0"
+    "tough-cookie": "^4.0.0",
+    "urlencode": "^1.1.0"
   }
 }
