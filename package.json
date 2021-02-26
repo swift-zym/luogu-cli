@@ -27,8 +27,11 @@
   "homepage": "https://github.com/swift-zym/luogu-cli#readme",
   "dependencies": {
     "cheerio": "^1.0.0-rc.5",
+    "colors-cli": "^1.0.27",
     "commander": "^7.1.0",
+    "inquirer": "^8.0.0",
     "request": "^2.88.2",
-    "request-promise": "git+https://github.com/request/request-promise.git"
+    "request-promise": "git+https://github.com/request/request-promise.git",
+    "tough-cookie": "^4.0.0"
   }
 }
