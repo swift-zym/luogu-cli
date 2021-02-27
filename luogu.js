@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* use LF */
 const cheerio = require('cheerio');
 let request = require('request-promise');
 const fs = require('fs');
