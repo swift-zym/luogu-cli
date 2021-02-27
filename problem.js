@@ -77,13 +77,13 @@ module.exports = function (luogu) {
                         },
                         jar: makeJar()
                     });
-                    console.log(json);
                     if (json.rid == undefined) {
                         throw new Error('submit problem fail.');
                     }
                     let luogu_config = await request({
                         url: config['luogu-domain'] + '_lfe/config',
-                        timeout: 1500
+                        timeout: 1500,
+                        json:true
                     });
                     var T = 0;
                     while (true) {
@@ -100,7 +100,6 @@ module.exports = function (luogu) {
                                 jar: makeJar()
                             });
                             let detail = status.currentData.record.detail;
-                            console.log(detail);
                             if (detail.compileResult == null) {
                                 console.log(`(T+${T})submit ${other}:`, color.blue('Wating'));
                             }
@@ -112,8 +111,31 @@ module.exports = function (luogu) {
                                 console.log(`(T+${T})submit ${other}:`, color.green('Accept'));
                                 break;
                             }
-                            else if (detail.compileResult.success == true) {
-                                console.log(`(T+${T})submit ${other}:`, color.blue('Running'));
+                            else {
+                                let isFinish = true;
+                                for (var i = 0; i < status.currentData.testCaseGroup.length; i++) {
+                                    for (let testcase of status.currentData.testCaseGroup[i]) {
+                                        let res = detail.judgeResult.subtasks[i].testCases[testcase.toString()];
+                                        if (res.status == 1) {
+                                            isFinish = false;
+                                        }
+                                    }
+                                }
+                                if (isFinish) {
+                                    console.log(`(T+${T})submit ${other}:`, color.red('Unaccept'));
+                                    console.log(color.blue("details:"));
+                                    for (var i = 0; i < status.currentData.testCaseGroup.length; i++) {
+                                        console.log(color.green(`Subtask ${i+1}:`));
+                                        for (let testcase of status.currentData.testCaseGroup[i]) {
+                                            let res = detail.judgeResult.subtasks[i].testCases[testcase.toString()];
+                                            console.log(color.blue(`testcase ${testcase+1}:`),luogu_config.recordStatus[res.status.toString()].name);
+                                        }
+                                    }
+                                    break;
+                                }
+                                else {
+                                    console.log(`(T+${T})submit ${other}:`, color.blue('Running'));
+                                }
                             }
                             await (sleep(1));
                             T += 1;
@@ -121,10 +143,10 @@ module.exports = function (luogu) {
                         catch (e) {
                             console.log(`(T+${T})submit ${other}:`, color.blue('Unknown'));
                             await (sleep(1));
+                            T += 1;
                         }
                     }
                 } catch (e) {
-                    console.log(e);
                     console.log(color.red('Error:'), 'submit problem fail.');
                 }
             }
@@ -142,7 +164,6 @@ module.exports = function (luogu) {
                         console.log(color.blue(problem.pid + ':'), problem.title);
                     }
                 } catch (e) {
-                    console.log(e);
                     console.log(color.red('Error:'), 'load problem fail.');
                 }
             }

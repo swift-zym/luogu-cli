@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 const cheerio = require('cheerio');
-const color = require('colors-cli');
-const inquirer = require('inquirer');
 let request=require('request-promise');
 const fs = require('fs');
 
@@ -9,7 +7,6 @@ const fs = require('fs');
 global.config = require('./config.json');
 
 const luogu = require('commander');
-const { reject } = require('bluebird');
 
 global.data = {
     get user(){
@@ -84,7 +81,6 @@ global.checkTokenStatus=async function(){
         if(json.code == 200 && json.currentData.mode != undefined)return true;
         return false;
     }catch(e){
-        console.log(e);
         return false;
     }
 }
