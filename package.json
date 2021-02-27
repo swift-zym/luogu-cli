@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "luogu": "index.js"
+    "luogu": "luogu.js"
   },
   "repository": {
     "type": "git",

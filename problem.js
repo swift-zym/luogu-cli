@@ -1,6 +1,15 @@
 const color = require('colors-cli');
 const request = require('request-promise');
+const fs = require('fs');
+const { resolve } = require('path');
 
+async function sleep(time) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve();
+        }, time);
+    });
+}
 module.exports = function (luogu) {
     luogu
         .command('problem <command> <params> [other]')
@@ -49,8 +58,12 @@ module.exports = function (luogu) {
                     console.log(color.red('Error:'), 'problem not found.');
                     return;
                 }
+                if (file[0] != '/') file = './' + file;
+                let tmp = file.split('/');
+                let filename = tmp[tmp.length - 1];
                 try {
                     let json = await request({
+                        method: 'POST',
                         url: config['luogu-domain'] + 'fe/api/problem/submit/' + other,
                         timeout: 1500,
                         headers: {
@@ -58,12 +71,61 @@ module.exports = function (luogu) {
                             'x-csrf-token': await getCSRFToken()
                         },
                         json: true,
-                        formData: {
-
-                        }
+                        body: {
+                            code: fs.readFileSync(file).toString(),
+                            lang: 0
+                        },
+                        jar: makeJar()
                     });
+                    console.log(json);
+                    if (json.rid == undefined) {
+                        throw new Error('submit problem fail.');
+                    }
+                    let luogu_config = await request({
+                        url: config['luogu-domain'] + '_lfe/config',
+                        timeout: 1500
+                    });
+                    var T = 0;
+                    while (true) {
+                        try {
+                            let status = await request({
+                                url: config['luogu-domain'] + 'record/' + json.rid,
+                                timeout: 1500,
+                                headers: {
+                                    "x-luogu-type": "content-only",
+                                    'referer': config['luogu-domain'] + 'record/' + json.rid,
+                                    'x-csrf-token': await getCSRFToken()
+                                },
+                                json: true,
+                                jar: makeJar()
+                            });
+                            let detail = status.currentData.record.detail;
+                            console.log(detail);
+                            if (detail.compileResult == null) {
+                                console.log(`(T+${T})submit ${other}:`, color.blue('Wating'));
+                            }
+                            else if (detail.compileResult.success == false) {
+                                console.log(`(T+${T})submit ${other}:`, color.red('Complie Error'));
+                                break;
+                            }
+                            else if (status.currentData.record.score == 100) {
+                                console.log(`(T+${T})submit ${other}:`, color.green('Accept'));
+                                break;
+                            }
+                            else if (detail.compileResult.success == true) {
+                                console.log(`(T+${T})submit ${other}:`, color.blue('Running'));
+                            }
+                            await (sleep(1));
+                            T += 1;
+                        }
+                        catch (e) {
+                            console.log(`(T+${T})submit ${other}:`, color.blue('Unknown'));
+                            await (sleep(1));
+                        }
+                    }
                 } catch (e) {
-                    console.log(color.red('Error:'),'submit problem fail.');
+                    console.log(e);
+                    console.log(color.red('Error:'), 'submit problem fail.');
                 }
             }
             else if (command == "search") {
