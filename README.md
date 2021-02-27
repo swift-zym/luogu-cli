@@ -17,12 +17,12 @@
 Usage: luogu [options] [command]
 
 Options:
-  -V, --version                 output the version number
-  -h, --help                    display help for command
+  -V, --version                         output the version number
+  -h, --help                            display help for command
 
 Commands:
-  auth|a <command>              用户身份验证 (login|logout|status)
-  problem|p <command> <params>  题目提交/查看 (send <file>|view <id>|search <keyword>)
-  benben|b <command> [params]   犇犇 (send [message]|view [page])
-  help [command]                display help for command
+  auth|a <command>                      用户身份验证 (login|logout|status)
+  problem|p <command> <params> [other]  题目提交/查看 (send <file> <id>|view <id>|search <keyword>)
+  benben|b <command> [params]           犇犇 (send [message]|view [page])
+  help [command]                        display help for command             display help for command
 ```
