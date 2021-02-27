@@ -4,7 +4,7 @@ const request = require('request-promise');
 module.exports = function (luogu) {
     luogu
         .command('benben <command> [params]')
-        .description('犇犇 (send [message]|view [page])')
+        .description('犇犇 (send <message>|view [page])')
         .alias('b')
         .action(async function (command, message) {
             if (!checkTokenStatus()) {

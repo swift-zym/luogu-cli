@@ -11,11 +11,16 @@ async function sleep(time) {
 }
 module.exports = function (luogu) {
     luogu
-        .command('problem <command> <params> [other]')
-        .description('题目提交/查看 (submit <file> <id>|view <id>|search <keyword>)')
+        .command('problem <command> [params...]')
+        .description('题目提交/查看 (submit <file> <id> [contest id]|view <id>|search <keyword>)')
         .alias('p')
-        .action(async function (command, file, other) {
+        .action(async function (command, params) {
             if (command == "view") {
+                if(params[0] == undefined){
+                    console.log(color.red("Error:"),'problem id not found.');
+                    return;
+                }
+                let file = params[0];
                 try {
                     let json = await request({
                         url: config['luogu-domain'] + 'problem/' + file,
@@ -53,17 +58,26 @@ module.exports = function (luogu) {
                     console.log('please re-login user.');
                     return;
                 }
+                if(params[0] == undefined){
+                    console.log(color.red("Error:"),'code file dir is null.');
+                    return;
+                }
+                let file = params[0],other = params[1];
                 if (other == undefined) {
-                    console.log(color.red('Error:'), 'problem not found.');
+                    console.log(color.red('Error:'), 'problem id is null.');
                     return;
                 }
                 if (file[0] != '/') file = './' + file;
                 let tmp = file.split('/');
                 let filename = tmp[tmp.length - 1];
                 try {
+                    var url =  config['luogu-domain'] + 'fe/api/problem/submit/' + other;
+                    if(params[2] != undefined){
+                        url+='?contestId='+params[2];
+                    }
                     let json = await request({
                         method: 'POST',
-                        url: config['luogu-domain'] + 'fe/api/problem/submit/' + other,
+                        url:url,
                         timeout: 1500,
                         headers: {
                             'referer': config['luogu-domain'] + 'problem/' + other,
@@ -150,6 +164,11 @@ module.exports = function (luogu) {
                 }
             }
             else if (command == "search") {
+                if(params[0] == undefined){
+                    console.log(color.red("Error:"),'keyword is null.');
+                    return;
+                }
+                let file = params[0];
                 try {
                     let problems = await request({
                         url: config['luogu-domain'] + 'problem/list' + '?keyword=' + require('urlencode')(file),
