@@ -12,7 +12,7 @@ async function sleep(time) {
 module.exports = function (luogu) {
     luogu
         .command('problem <command> <params> [other]')
-        .description('题目提交/查看 (send <file> <id>|view <id>|search <keyword>)')
+        .description('题目提交/查看 (submit <file> <id>|view <id>|search <keyword>)')
         .alias('p')
         .action(async function (command, file, other) {
             if (command == "view") {
