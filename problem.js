@@ -1,7 +1,6 @@
 const color = require('colors-cli');
 const request = require('request-promise');
 const fs = require('fs');
-const { resolve } = require('path');
 
 async function sleep(time) {
     return new Promise((resolve, reject) => {
@@ -83,7 +82,7 @@ module.exports = function (luogu) {
                     let luogu_config = await request({
                         url: config['luogu-domain'] + '_lfe/config',
                         timeout: 1500,
-                        json:true
+                        json: true
                     });
                     var T = 0;
                     while (true) {
@@ -125,10 +124,10 @@ module.exports = function (luogu) {
                                     console.log(`(T+${T})submit ${other}:`, color.red('Unaccept'));
                                     console.log(color.blue("details:"));
                                     for (var i = 0; i < status.currentData.testCaseGroup.length; i++) {
-                                        console.log(color.green(`Subtask ${i+1}:`));
+                                        console.log(color.green(`Subtask ${i + 1}:`));
                                         for (let testcase of status.currentData.testCaseGroup[i]) {
                                             let res = detail.judgeResult.subtasks[i].testCases[testcase.toString()];
-                                            console.log(color.blue(`testcase ${testcase+1}:`),luogu_config.recordStatus[res.status.toString()].name);
+                                            console.log(color.blue(`testcase ${testcase + 1}:`), luogu_config.recordStatus[res.status.toString()].name);
                                         }
                                     }
                                     break;
