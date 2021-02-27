@@ -17,6 +17,8 @@
 
 ## 使用
 
+### 全部功能
+
 ```sh
 % luogu -h
 
@@ -28,7 +30,13 @@ Options:
 
 Commands:
   auth|a <command>                      用户身份验证 (login|logout|status)
-  problem|p <command> <params> [other]  题目提交/查看 (send <file> <id>|view <id>|search <keyword>)
+  problem|p <command> <params> [other]  题目提交/查看 (submit <file> <id>|view <id>|search <keyword>)
   benben|b <command> [params]           犇犇 (send [message]|view [page])
   help [command]                        display help for command             display help for command
+```
+
+### 示例
+```sh
+luogu p submit main.cpp P1000
+luogu benben view
 ```
