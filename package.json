@@ -1,6 +1,6 @@
 {
   "name": "luogu-cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "cli tool for luogu online judge",
   "main": "index.js",
   "scripts": {
@@ -31,7 +31,7 @@
     "commander": "^7.1.0",
     "inquirer": "^8.0.0",
     "request": "^2.88.2",
-    "request-promise": "git+https://github.com/request/request-promise.git",
+    "request-promise": "^4.2.6",
     "tough-cookie": "^4.0.0",
     "urlencode": "^1.1.0"
   }
