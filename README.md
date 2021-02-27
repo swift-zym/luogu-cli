@@ -10,6 +10,12 @@
 
 暂时不支持的功能:
 - 所有需要验证码的操作
+- 
+## 安装
+
+`npm install -g luogu-cli`
+
+## 使用
 
 ```sh
 % luogu -h
