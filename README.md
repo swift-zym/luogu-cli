@@ -1,3 +1,10 @@
+如果 `luogu-cli` 在运行时产生了类似下面的错误：
+```sh
+/usr/bin/env: “node\r”: 没有那个文件或目录
+```
+请尝试下面的操作：
+![image.png](https://i.loli.net/2021/02/27/odWZ5B8GsKLi91A.png)
+
 # luogu-cli
 洛谷命令行工具
 
