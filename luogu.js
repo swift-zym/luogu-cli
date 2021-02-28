@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-/* use LF */
 const cheerio = require('cheerio');
 let request = require('request-promise');
 const fs = require('fs');
@@ -69,6 +68,7 @@ global.makeJar = function () {
 global.checkTokenStatus = async function () {
     if (data.user.uid == undefined) return false;
     try {
+        await require('./anaylsis')()
         let json = await request({
             uri: config['luogu-domain'] + 'auth/unlock',
             timeout: 1500,
@@ -91,5 +91,6 @@ luogu.version(require('./package.json').version);
 require('./auth')(luogu);
 require('./problem')(luogu);
 require('./benben')(luogu);
+//require('./ide')(luogu); NOT FINISHED
 
 luogu.parse(process.argv); 
