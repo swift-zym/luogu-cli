@@ -97,6 +97,16 @@ global.getContent = async function(dir){
         jar: await makeJar()
     });
 }
+
+global.getCaptcha = async function(){
+    let img = await request({
+        url: config['luogu-domain'] + 'api/verify/captcha',
+        timeout:1500
+    });
+    fs.writeFileSync('captcha.jpg',img);
+    console.log(img);
+}
+
 luogu.version(require('./package.json').version);
 
 require('./auth')(luogu);
@@ -104,5 +114,6 @@ require('./problem')(luogu);
 require('./benben')(luogu);
 //require('./ide')(luogu); NOT FINISHED
 require('./paste')(luogu);
+require('./tool')(luogu);
 
 luogu.parse(process.argv); 

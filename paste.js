@@ -5,7 +5,7 @@ const inquirer = require('inquirer')
 module.exports = function (luogu) {
     luogu
         .command('paste <command> [params...]')
-        .description('云剪切板(list|view <id>|new')
+        .description('云剪切板(list|view <id>|new)')
         .alias('pas')
         .action(async function (command, params) {
             if (command == "list") {
@@ -21,8 +21,11 @@ module.exports = function (luogu) {
                 }
                 let id = params[0];
                 let json = await getContent(`paste/${id}`);
-                console.log(color.blue("Data:"));
-                console.log(json.currentData.paste.data);
+                try {
+                    console.log(color.blue("Data:\n"),json.currentData.paste.data);
+                }catch(e){
+                    console.log(color.red("Error:"),`paste ${id} not found.`);
+                }
             }
             else if (command == "new") {
                 let text = undefined, public = undefined;
@@ -59,11 +62,11 @@ module.exports = function (luogu) {
                     },
                     jar: makeJar()
                 });
-                if(json.id != undefined){
-                    console.log(color.blue('id:'),json.id);
+                if (json.id != undefined) {
+                    console.log(color.blue('id:'), json.id);
                 }
-                else{
-                    console.log(color.red('Error:'),'create paste fail.');
+                else {
+                    console.log(color.red('Error:'), 'create paste fail.');
                 }
             }
             else {
