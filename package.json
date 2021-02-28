@@ -35,5 +35,8 @@
     "request-promise": "^4.2.6",
     "tough-cookie": "^4.0.0",
     "urlencode": "^1.1.0"
+  },
+  "devDependencies": {
+    "iconv-lite": "^0.6.2"
   }
 }

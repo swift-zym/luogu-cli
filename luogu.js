@@ -2,7 +2,7 @@
 const cheerio = require('cheerio');
 let request = require('request-promise');
 const fs = require('fs');
-
+const rq = require('request')
 
 global.config = require('./config.json');
 
@@ -86,7 +86,7 @@ global.checkTokenStatus = async function () {
     }
 }
 
-global.getContent = async function(dir){
+global.getContent = async function (dir) {
     return await request({
         url: config['luogu-domain'] + dir,
         timeout: 1500,
@@ -98,13 +98,33 @@ global.getContent = async function(dir){
     });
 }
 
-global.getCaptcha = async function(){
-    let img = await request({
+global.getCaptcha = async function () {
+    const process = fs.createWriteStream(__dirname + '/captcha.jpg')
+    rq({
         url: config['luogu-domain'] + 'api/verify/captcha',
-        timeout:1500
+        timeout: 1500
+    }).pipe(process);
+
+    process.on("finish", () => {
+        if (require('os').type() == "Windows_NT") {
+            var child_process = require('child_process');
+            //var iconv = require('iconv-lite');
+            //var encoding = 'cp936';
+            var binaryEncoding = 'binary';
+            child_process.exec(`start ${__dirname + '\\captcha.jpg'}`, { encoding: binaryEncoding }, function (err, stdout, stderr) {
+                //console.log(iconv.decode(new Buffer(stdout, binaryEncoding), encoding), iconv.decode(new Buffer(stderr, binaryEncoding), encoding));
+            });
+        }
+        else {
+            var child_process = require('child_process');
+            //var iconv = require('iconv-lite');
+            //var encoding = 'utf-8';
+            var binaryEncoding = 'binary';
+            child_process.exec(`open ${__dirname + '/captcha.jpg'}`, { encoding: binaryEncoding }, function (err, stdout, stderr) {
+                //console.log(iconv.decode(new Buffer(stdout, binaryEncoding), encoding), iconv.decode(new Buffer(stderr, binaryEncoding), encoding));
+            });
+        }
     });
-    fs.writeFileSync('captcha.jpg',img);
-    console.log(img);
 }
 
 luogu.version(require('./package.json').version);
@@ -116,4 +136,4 @@ require('./benben')(luogu);
 require('./paste')(luogu);
 require('./tool')(luogu);
 
-luogu.parse(process.argv); 
+luogu.parse(process.argv);
