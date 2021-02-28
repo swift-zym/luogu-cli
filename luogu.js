@@ -86,11 +86,23 @@ global.checkTokenStatus = async function () {
     }
 }
 
+global.getContent = async function(dir){
+    return await request({
+        url: config['luogu-domain'] + dir,
+        timeout: 1500,
+        headers: {
+            "x-luogu-type": "content-only"
+        },
+        json: true,
+        jar: await makeJar()
+    });
+}
 luogu.version(require('./package.json').version);
 
 require('./auth')(luogu);
 require('./problem')(luogu);
 require('./benben')(luogu);
 //require('./ide')(luogu); NOT FINISHED
+require('./paste')(luogu);
 
 luogu.parse(process.argv); 

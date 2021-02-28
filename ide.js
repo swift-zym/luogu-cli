@@ -6,7 +6,6 @@ module.exports = function (luogu) {
     luogu
         .command('ide <code-dir> <input-dir>')
         .description('洛谷在线ide运行')
-        .alias('p')
         .action(async function (code_dir, input_dir) {
             if((!fs.existsSync(code_dir))||(!fs.existsSync(input_dir))){
                 console.log(color.red('Error:'),'code dir or input dir not exit.');
