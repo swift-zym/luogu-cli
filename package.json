@@ -1,6 +1,6 @@
 {
   "name": "luogu-cli",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "cli tool for luogu online judge",
   "main": "index.js",
   "scripts": {
