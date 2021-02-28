@@ -3,19 +3,20 @@ const request = require('request-promise');
 
 module.exports = function (luogu) {
     luogu
-        .command('benben <command> [params]')
+        .command('benben <command> [params...]')
         .description('犇犇 (send <message>|view [page])')
         .alias('b')
-        .action(async function (command, message) {
+        .action(async function (command, parmas) {
             if (!checkTokenStatus()) {
                 console.log('please re-login user.');
                 return;
             }
             if (command == "send") {
-                if (message == undefined) {
+                if (parmas[0] == undefined) {
                     console.log(color.red('Error:'), "message can not be null.");
                 }
                 else {
+                    let message = parmas[0];
                     let token = await getCSRFToken();
                     try {
                         let json = await request({
@@ -45,6 +46,8 @@ module.exports = function (luogu) {
                 }
             }
             else if (command == "view") {
+                let message = undefined;
+                if (parmas != undefined) message = parmas[0];
                 try {
                     var url = config['luogu-domain'] + 'api/feed/watching';
                     if (message != undefined) {
