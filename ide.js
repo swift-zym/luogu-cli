@@ -24,12 +24,13 @@ module.exports = function (luogu) {
                 json: true,
                 form: {
                     code: code,
-                    lang: 1,
+                    lang: 1,//TODO: support select language
                     input: input,
                     "csrf-token": getCSRFToken()
                 },
                 jar: makeJar()
             });
             console.log(json);
+            //TODO: how to get result?
         });
     }
