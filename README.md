@@ -42,6 +42,7 @@ Commands:
   problem|p <command> [params...]  题目提交/查看 (submit <file> <id> [contest id]|view <id>|search <keyword>)
   benben|b <command> [params...]   犇犇 (send <message>|view [page])
   paste|pas <command> [params...]  云剪切板(list|view <id>|new)
+  tool <command>                   工具(captcha|check-online)
   help [command]                   display help for command
 ```
 
